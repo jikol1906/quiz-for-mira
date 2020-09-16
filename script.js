@@ -6,6 +6,7 @@ $(document).ready(function () {
       answer: true,
       details:
         'Wenn qualitativ gute Unterstützung und Verständnis zur Verfügung stehen, können Menschen mit einer SES soziale, akademische und berufliche Erfolge erreichen.',
+      didAnswer: false,
     },
     {
       question:
@@ -13,6 +14,7 @@ $(document).ready(function () {
       answer: true,
       details:
         'Der Schriftspracherwerb hängt von den jeweiligen sprachlichen Fähigkeiten ab und genau hier liegt das Hauptproblem bei Menschen mit einer SES.',
+      didAnswer: false,
     },
     {
       question:
@@ -20,12 +22,14 @@ $(document).ready(function () {
       answer: true,
       details:
         'Menschen mit einer SES sehen nicht anders aus als andere Gleichaltrige, die Störung erscheint nicht sofort ersichtlich.',
+      didAnswer: false,
     },
     {
       question: 'Menschen mit einer SES sind nicht intelligent.',
       answer: false,
       details:
         'Menschen mit einer SES haben Schwierigkeiten mit der Sprache, nicht mit der Intelligenz.',
+      didAnswer: false,
     },
     {
       question:
@@ -33,6 +37,7 @@ $(document).ready(function () {
       answer: false,
       details:
         'Liegt eine SES vor, sind alle Sprachen, die diese Person spricht, davon betroffen.',
+      didAnswer: false,
     },
     {
       question:
@@ -40,6 +45,7 @@ $(document).ready(function () {
       answer: true,
       details:
         'Obwohl die Sprachentwicklung das Hauptproblem darstellt, kann eine SES oft mit Herausforderungen/Schwierigkeiten in anderen Bereichen der Entwicklung einhergehen.',
+      didAnswer: false,
     },
     {
       question:
@@ -47,6 +53,7 @@ $(document).ready(function () {
       answer: false,
       details:
         'Untersuchungen zeigen, dass Jugendliche von spezieller/spezialisierter Unterstützung bei der/zurEntwicklung ihrer sprachlichen Fähigkeiten profitieren.',
+      didAnswer: false,
     },
     {
       question:
@@ -54,6 +61,7 @@ $(document).ready(function () {
       answer: false,
       details:
         'SES treten bei Kindern auf der ganzen Welt und in jedem sozialen Milieu auf.',
+      didAnswer: false,
     },
 
     {
@@ -62,6 +70,7 @@ $(document).ready(function () {
       answer: true,
       details:
         'Trotz der hohen Prävalenz ist die genaue Ursache von SES nach wie vor unbekannt. Eine SES kann familiär vererbt und durch genetische Faktoren beeinflusst werden.',
+      didAnswer: false,
     },
 
     {
@@ -70,19 +79,22 @@ $(document).ready(function () {
       answer: false,
       details:
         'Eine SES kann ein Leben lang bestehen bleiben, wenn sie nicht erkannt und nicht behandelt wird.',
+      didAnswer: false,
     },
   ];
+  var answers = [];
+  var didClickFinish = false;
 
   var container = $('.container');
 
-  var radioId = 0;
-
   for (let i = 0; i < questions.length; i++) {
     container.append(
-      '<div class="question">' +
+      '<div class="question" id="' +
+        i +
+        '">' +
         '<h3>' +
         '<span class="question__number">#' +
-        i +
+        (i + 1) +
         ' </span>' +
         questions[i].question +
         '</h3>' +
@@ -107,28 +119,55 @@ $(document).ready(function () {
     );
   }
 
-  var answers = [];
-
-  function updateAnswer(questionNumber,answer) {
-    answers[questionNumber].answered = answer === 'true' ? true : false
-
-    console.log(answers)
-  }
-
   for (let i = 0; i < questions.length; i++) {
-
-    answers.push({
-        answered:false,
-    })
+    answers.push(false);
 
     $("input[type='radio'][name='" + i + "']").click(function () {
-        updateAnswer($(this).attr('name'),$(this).attr('data-choice'))
-    //   console.log($(this).attr('data-choice'));
-    //   console.log($(this).attr('name'));
+      updateAnswer($(this).attr('name'), $(this).attr('data-choice'));
     });
   }
 
-  console.log(answers)
+  function updateAnswer(questionNumber, answer) {
+    answers[questionNumber] = answer === 'true' ? true : false;
+    questions[questionNumber].didAnswer = true;
+  }
+
+  function showResults() {
+    if (!didClickFinish) {
+      var correctAnswers = 0;
+
+      for (let i = 0; i < questions.length; i++) {
+        if (!questions[i].didAnswer || answers[i] !== questions[i].answer) {
+          var question = $('#' + i + '');
+          if (questions[i].answer) {
+            $($('#' + i + '>.question__label-group')[1]).css(
+              'border',
+              '2px solid red'
+            );
+          } else {
+            $($('#' + i + '>.question__label-group')[0]).css(
+              'border',
+              '2px solid red'
+            );
+          }
+          question.append(
+            '<p class="question__details">' + questions[i].details + '</p>'
+          );
+        } else {
+          correctAnswers++;
+        }
+      }
+      var score =
+        '<h3>Sie haben ' +
+        correctAnswers +
+        '/' +
+        questions.length +
+        ' Fragen richtig beantwortet</h3>';
+      var scoreBoard = '<div class="scoreboard">' + score + '</div>';
+      container.prepend(scoreBoard);
+      didClickFinish = true;
+    }
+  }
   container.append('<button class="btn" id="done-button">Fertig</button>');
 
   $('#done-button').on('click', function () {
@@ -140,5 +179,7 @@ $(document).ready(function () {
       },
       800
     );
+
+    showResults();
   });
 });
