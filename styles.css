@@ -1,40 +1,62 @@
 html {
-    font-size: 62.5%;
+  font-size: 62.5%;
 }
 
 body {
   font-family: sans-serif;
   color: #222;
   background-color: #7b2172;
-  
 }
 
 .container {
   max-width: 70rem;
-  margin: 0 auto;
+  margin: 10rem auto;
 }
 
 .question {
   background-color: #fafafa;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   padding: 4rem 5rem;
   border-radius: 5px;
   -webkit-box-shadow: 5px 7px 22px -8px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 5px 7px 22px -8px rgba(0, 0, 0, 0.75);
-  box-shadow: 5px 7px 22px -8px rgba(0, 0, 0, 0.75);    
+  box-shadow: 5px 7px 22px -8px rgba(0, 0, 0, 0.75);
 }
 
 .question h3 {
-    font-size: 2.7rem;
+  font-size: 2.7rem;
 }
 
 .question__number {
   opacity: 0.8;
 }
 
+.question__label-group {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.question__label-group span {
+  font-size: 1.5rem;
+}
+
+.btn {
+  display: block;
+  margin: 0 auto;
+  padding: 2rem 5rem;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 2rem;
+
+}
+
 .switch {
   position: relative;
   display: inline-block;
+  margin-right: 2rem;
   width: 60px;
   height: 34px;
 }

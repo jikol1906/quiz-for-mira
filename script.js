@@ -94,6 +94,8 @@ $(document).ready(function () {
     );
   }
 
+  container.append('<button class="btn">Finish</button>')
+
   for (let i = 0; i < questions.length; i++) {
     checkboxes.push({ number: i, checked: false });
   }
