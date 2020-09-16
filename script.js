@@ -136,19 +136,23 @@ $(document).ready(function () {
     if (!didClickFinish) {
       var correctAnswers = 0;
 
+      var wrongStyles = {
+        border: '4px solid red',
+        background: ' rgba(128,0,0,.1)',
+      };
+
+      var correctStyles = {
+        border: '4px solid green',
+        background: 'rgba(0,128,0,.1)',
+      };
+
       for (let i = 0; i < questions.length; i++) {
         var question = $('#' + i + '');
         if (questions[i].didAnswer && answers[i] !== questions[i].answer) {
           if (questions[i].answer) {
-            $($('#' + i + '>.question__label-group')[1]).css(
-              'border',
-              '2px solid red'
-            );
+            $($('#' + i + '>.question__label-group')[1]).css(wrongStyles);
           } else {
-            $($('#' + i + '>.question__label-group')[0]).css(
-              'border',
-              '2px solid red'
-            );
+            $($('#' + i + '>.question__label-group')[0]).css(wrongStyles);
           }
           question.append(
             '<p class="question__details">' + questions[i].details + '</p>'
@@ -158,6 +162,11 @@ $(document).ready(function () {
             '<p class="question__details">' + questions[i].details + '</p>'
           );
         } else {
+          if (questions[i].answer) {
+            $($('#' + i + '>.question__label-group')[0]).css(correctStyles);
+          } else {
+            $($('#' + i + '>.question__label-group')[1]).css(correctStyles);
+          }
           correctAnswers++;
         }
       }
@@ -172,6 +181,7 @@ $(document).ready(function () {
       didClickFinish = true;
     }
   }
+
   container.append('<button class="btn" id="done-button">Fertig</button>');
 
   $('#done-button').on('click', function () {
