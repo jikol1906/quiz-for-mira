@@ -73,9 +73,9 @@ $(document).ready(function () {
     },
   ];
 
-  var checkboxes = [];
-
   var container = $('.container');
+
+  var radioId = 0;
 
   for (let i = 0; i < questions.length; i++) {
     container.append(
@@ -86,17 +86,59 @@ $(document).ready(function () {
         ' </span>' +
         questions[i].question +
         '</h3>' +
+        '<div class="question__label-group">' +
         '<label class="switch">' +
-        '<input type="checkbox" id="1" />' +
+        ' <input type="radio" data-choice="true" name="' +
+        i +
+        '" />' +
+        ' <span class="slider"></span>' +
+        '</label>' +
+        '<span>Richtig</span>' +
+        '</div>' +
+        '<div class="question__label-group">' +
+        '<label class="switch">' +
+        ' <input type="radio" data-choice="false" name="' +
+        i +
+        '"/>' +
         '<span class="slider"></span>' +
-        '</label>' +    
+        ' </label>' +
+        '  <span>Falsch</span>' +
         '</div>'
     );
   }
 
-  container.append('<button class="btn">Fertig</button>')
+  var answers = [];
+
+  function updateAnswer(questionNumber,answer) {
+    answers[questionNumber].answered = answer === 'true' ? true : false
+
+    console.log(answers)
+  }
 
   for (let i = 0; i < questions.length; i++) {
-    checkboxes.push({ number: i, checked: false });
+
+    answers.push({
+        answered:false,
+    })
+
+    $("input[type='radio'][name='" + i + "']").click(function () {
+        updateAnswer($(this).attr('name'),$(this).attr('data-choice'))
+    //   console.log($(this).attr('data-choice'));
+    //   console.log($(this).attr('name'));
+    });
   }
+
+  console.log(answers)
+  container.append('<button class="btn" id="done-button">Fertig</button>');
+
+  $('#done-button').on('click', function () {
+    // Using jQuery's animate() method to add smooth page scroll
+    // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+    $('html, body').animate(
+      {
+        scrollTop: 0,
+      },
+      800
+    );
+  });
 });
