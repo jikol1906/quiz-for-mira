@@ -73,7 +73,28 @@ $(document).ready(function () {
     },
   ];
 
-  $('#' + 1).change(function () {
-    console.log(this.checked);
-  });
+  var checkboxes = [];
+
+  var container = $('.container');
+
+  for (let i = 0; i < questions.length; i++) {
+    container.append(
+      '<div class="question">' +
+        '<h3>' +
+        '<span class="question__number">#' +
+        i +
+        ' </span>' +
+        questions[i].question +
+        '</h3>' +
+        '<label class="switch">' +
+        '<input type="checkbox" id="1" />' +
+        '<span class="slider"></span>' +
+        '</label>' +    
+        '</div>'
+    );
+  }
+
+  for (let i = 0; i < questions.length; i++) {
+    checkboxes.push({ number: i, checked: false });
+  }
 });
