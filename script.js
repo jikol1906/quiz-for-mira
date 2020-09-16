@@ -137,8 +137,8 @@ $(document).ready(function () {
       var correctAnswers = 0;
 
       for (let i = 0; i < questions.length; i++) {
-        if (!questions[i].didAnswer || answers[i] !== questions[i].answer) {
-          var question = $('#' + i + '');
+        var question = $('#' + i + '');
+        if (questions[i].didAnswer && answers[i] !== questions[i].answer) {
           if (questions[i].answer) {
             $($('#' + i + '>.question__label-group')[1]).css(
               'border',
@@ -150,6 +150,10 @@ $(document).ready(function () {
               '2px solid red'
             );
           }
+          question.append(
+            '<p class="question__details">' + questions[i].details + '</p>'
+          );
+        } else if (!questions[i].didAnswer) {
           question.append(
             '<p class="question__details">' + questions[i].details + '</p>'
           );
